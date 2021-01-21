@@ -4,6 +4,8 @@ const Schemes = require('./scheme-model.js');
 
 const router = express.Router();
 
+const { valId, valScheme, valStep } = require("../middleware")
+
 router.get('/', (req, res) => {
   Schemes.find()
     .then(schemes => {
@@ -14,7 +16,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', valId, (req, res) => {
   const { id } = req.params;
 
   Schemes.findById(id)
@@ -30,7 +32,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.get('/:id/steps', (req, res) => {
+router.get('/:id/steps', valId, (req, res) => {
   const { id } = req.params;
 
   Schemes.findSteps(id)
@@ -46,7 +48,7 @@ router.get('/:id/steps', (req, res) => {
     });
 });
 
-router.post('/', (req, res) => {
+router.post('/', valScheme, (req, res) => {
   const schemeData = req.body;
 
   Schemes.add(schemeData)
@@ -58,7 +60,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.post('/:id/steps', (req, res) => {
+router.post('/:id/steps', valId, valStep, (req, res) => {
   const stepData = req.body;
   const { id } = req.params;
 
@@ -78,7 +80,7 @@ router.post('/:id/steps', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', valId, (req, res) => {
   const { id } = req.params;
   const changes = req.body;
 
@@ -98,7 +100,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', valId, (req, res) => {
   const { id } = req.params;
 
   Schemes.remove(id)
